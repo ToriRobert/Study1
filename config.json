@@ -5,9 +5,8 @@
             {
                 "name": "qpdriver",
                 "image": {
-                    "registry": "torizhang",
-                    "name": "xapp",
-                    "tag": "0.0.2"
+                    "registry": "torizhang/xapp",
+                    "name": "0.0.2"
                 }
             }
         ],
