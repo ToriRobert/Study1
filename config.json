@@ -5,7 +5,7 @@
             {
                 "name": "qpdriver",
                 "image": {
-                    "registry": "Docker Hub",
+                    "registry": "docker.io",
                     "name": "torizhang/xapp",
                     "tag": "0.0.2"
                 }
