@@ -1,0 +1,40 @@
+{
+        "xapp_name": "qpdriver",
+        "version": "1.1.0",
+        "containers": [
+            {
+                "name": "qpdriver",
+                "image": {
+                    "registry": "torizhang/xapp",
+                    "tag": "0.0.2"
+                }
+            }
+        ],
+        "messaging": {
+            "ports": [
+                {
+                    "name": "rmr-data",
+                    "container": "qpdriver",
+                    "port": 4560,
+                    "rxMessages": ["TS_UE_LIST", "A1_POLICY_REQ", "QP_TX_TEST"],
+                    "txMessages": ["TS_QOE_PRED_REQ"],
+                    "policies": [],
+                    "description": "rmr receive data port for qpdriver"
+                },
+                {
+                    "name": "rmr-route",
+                    "container": "qpdriver",
+                    "port": 4561,
+                    "description": "rmr route port for qpdriver"
+                }
+            ]
+        },
+        "rmr": {
+            "protPort": "tcp:4560",
+            "maxSize": 2072,
+            "numWorkers": 1,
+            "txMessages": ["TS_QOE_PRED_REQ"],
+            "rxMessages": ["TS_UE_LIST", "A1_POLICY_REQ", "QP_TX_TEST"],
+            "policies": []
+        }
+    }
