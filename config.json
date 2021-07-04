@@ -1,13 +1,13 @@
 {
         "xapp_name": "qpdriver",
-        "version": "1.1.0",
+        "version": "0.0.1",
         "containers": [
             {
                 "name": "qpdriver",
                 "image": {
                     "registry": "docker.io",
-                    "name": "torizhang/xapp",
-                    "tag": "0.0.2"
+                    "name": "torizhang/test-qp-driver",
+                    "tag": "0.0.1"
                 }
             }
         ],
@@ -18,8 +18,8 @@
                     "container": "qpdriver",
                     "port": 4560,
                     "rxMessages": ["TS_UE_LIST", "A1_POLICY_REQ", "QP_TX_TEST"],
-                    "txMessages": ["TS_QOE_PRED_REQ"],
-                    "policies": [],
+                    "txMessages": ["TS_QOE_PRED_REQ", "QP_TX_TEST"],
+                    "policies": [20000],
                     "description": "rmr receive data port for qpdriver"
                 },
                 {
@@ -30,12 +30,16 @@
                 }
             ]
         },
+        "controls": {
+            "example_int": 10000,
+            "example_str": "value"
+        },
         "rmr": {
             "protPort": "tcp:4560",
             "maxSize": 2072,
             "numWorkers": 1,
-            "txMessages": ["TS_QOE_PRED_REQ"],
+            "txMessages": ["TS_QOE_PRED_REQ", "QP_TX_TEST"],
             "rxMessages": ["TS_UE_LIST", "A1_POLICY_REQ", "QP_TX_TEST"],
-            "policies": []
+            "policies": [20000]
         }
     }
