@@ -17,8 +17,8 @@
                     "name": "rmr-data",
                     "container": "qpdriver",
                     "port": 4560,
-                    "rxMessages": ["TS_UE_LIST", "A1_POLICY_REQ", "QP_TX_TEST"],
-                    "txMessages": ["TS_QOE_PRED_REQ", "RIC_ALARM", "QPD_TX_TEST"],
+                    "rxMessages": ["A1_POLICY_REQ", "QP_TX_TEST"],
+                    "txMessages": ["QPD_TX_TEST"],
                     "policies": [20000],
                     "description": "rmr receive data port for qpdriver"
                 },
@@ -30,40 +30,13 @@
                 }
             ]
         },
-        "controls": {
-            "example_int": 10000,
-            "example_str": "value"
-        },
         "rmr": {
             "protPort": "tcp:4560",
             "maxSize": 2072,
             "numWorkers": 1,
-            "txMessages": ["TS_QOE_PRED_REQ", "RIC_ALARM", "QPD_TX_TEST"],
-            "rxMessages": ["TS_UE_LIST", "A1_POLICY_REQ", "QP_TX_TEST"],
+            "txMessages": ["QPD_TX_TEST"],
+            "rxMessages": ["A1_POLICY_REQ", "QP_TX_TEST"],
             "policies": [20000]
-        },
-        "controls-schema.json":{
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "#/controls",
-            "type": "object",
-            "title": "Controls Section Schema",
-            "required": [
-                "example_int",
-                "example_str"
-        ],
-        "properties": {
-            "example_int": {
-                "$id": "#/properties/controls/items/properties/example_int",
-                "type": "integer",
-                "title": "An example integer property",
-                "default": 0
-            },
-            "example_str": {
-                "$id": "#/properties/controls/items/properties/example_str",
-                "type": "string",
-                "title": "An example string property",
-                "default": ""
-            }
         }
     }
-}
+        
