@@ -1,0 +1,41 @@
+{
+        "xapp_name": "qp",
+        "version": "0.0.3",
+        "containers": [
+            {
+                "name": "qp",
+                "image": {
+                    "registry": "docker.io",
+                    "name": "jojowei/qp-test",
+                    "tag": "0.0.1"
+                }
+            }
+        ],
+        "messaging": {
+            "ports": [
+                {
+                    "name": "rmr-data",
+                    "container": "qp",
+                    "port": 4560,
+                    "rxMessages": ["TS_UE_LIST", "QPD_TX_TEST"],
+                    "txMessages": ["TS_QOE_PREDICTION", "QP_TX_TEST"],
+                    "policies": [],
+                    "description": "rmr receive data port for qp"
+                },
+                {
+                    "name": "rmr-route",
+                    "container": "qp",
+                    "port": 4561,
+                    "description": "rmr route port for qp"
+                }
+            ]
+        },
+        "rmr": {
+            "protPort": "tcp:4560",
+            "maxSize": 2072,
+            "numWorkers": 1,
+            "rxMessages": ["TS_UE_LIST", "QPD_TX_TEST"],
+            "txMessages": ["TS_QOE_PREDICTION", "QP_TX_TEST"],
+            "policies": []
+        }
+}
