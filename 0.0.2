@@ -63,29 +63,18 @@ def policy_handler(self, summary, sbuf):
     self.logger.warning("Policy ID of the policy: {}".format(summary[rmr.RMR_MS_SUB_ID]))
     self.logger.warning("Payload of the Policy: {}".format(summary[rmr.RMR_MS_PAYLOAD]))
     
-    self.traffic_steering_requests += 1
-    # we don't use rts here; free the buffer
     self.rmr_free(sbuf)
-
-    ue_list = []
-    try:
-        req = json.loads(summary[rmr.RMR_MS_PAYLOAD])  # input should be a json encoded as bytes
-        ue_list = req["UEPredictionSet"]
-        self.logger.debug("steering_req_handler processing request for UE list {}".format(ue_list))
-    except (json.decoder.JSONDecodeError, KeyError):
-        self.logger.warning("steering_req_handler failed to parse request: {}".format(summary[rmr.RMR_MS_PAYLOAD]))
-        return
     
-    for ueid in ue_list:
-        try:
-            to_qpp = data.form_qp_pred_req(self, ueid)
-            self.logger.debug("steering_req_handler processing request for UE list {}".format(to_qpp))
-            payload = json.dumps(to_qpp).encode()
-            success = self.rmr_send(payload, 30001)
-            if not success:
-                self.logger.warning("steering_req_handler failed to send to QP!")
-        except UENotFound:
-            self.logger.warning("steering_req_handler received a TS Request for a UE that does not exist!")
+    ue_data_bytes = self.sdl_get("TS-UE-metrics", ueid, usemsgpack=False)
+
+    if not ue_data_bytes:
+        self.logger.warning("UENotFound")
+        
+    # input should be a json encoded as bytes
+    ue_data = json.loads(ue_data_bytes.decode())
+    self.logger.debug("ue data is".format(ue_data))
+
+    
  
 def qp_message_handler(self, summary, sbuf):
     self.logger.warning("QPD had received the qp message!")
