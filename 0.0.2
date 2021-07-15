@@ -79,6 +79,7 @@ def policy_handler(self, summary, sbuf):
     for ueid in ue_list:
         try:
             to_qpp = data.form_qp_pred_req(self, ueid)
+            self.logger.debug("steering_req_handler processing request for UE list {}".format(to_qpp))
             payload = json.dumps(to_qpp).encode()
             success = self.rmr_send(payload, 30001)
             if not success:
