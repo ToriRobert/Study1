@@ -65,15 +65,22 @@ def policy_handler(self, summary, sbuf):
     
     self.rmr_free(sbuf)
     
-    ue_data_bytes = self.sdl_get("TS-UE-metrics", ueid, usemsgpack=False)
+    
+    # Access the ue data though SDL
+    ue_list = ["257", "258", "259", "260", "261", "262", "264", "265"]
 
-    if not ue_data_bytes:
-        self.logger.warning("UENotFound")
-        
-    # input should be a json encoded as bytes
-    ue_data = json.loads(ue_data_bytes.decode())
-    self.logger.debug("ue data is".format(ue_data))
-
+    for ueid in ue_list:
+        ue_data_bytes = self.sdl_get("TS-UE-metrics", ueid, usemsgpack=False)
+        ue_data = json.loads(ue_data_bytes.decode())
+        self.logger.debug("ue data is: {}".format(ue_data))
+    
+    # Send the fake ue data to QP xApp
+    ue_message = { 'ueid-list' : [57,123,224,378,465,578,618,748,859,954], 'ue-data': { '57':{'rsrp': 74, 'rsrq': 65, 'rssinr': 113}, '123':{'rsrp': 45, 'rsrq': 28, 'rssinr': 78}, '224':{'rsrp': 57, 'rsrq': 47, 'rssinr': 89}, '378':{'rsrp': 98, 'rsrq': 83, 'rssinr': 134}, '465':{'rsrp': 85, 'rsrq': 69, 'rssinr': 99}, '578':{'rsrp': 34, 'rsrq': 19, 'rssinr': 59}, '618':{'rsrp': 67, 'rsrq': 46, 'rssinr': 82}, '748':{'rsrp': 36, 'rsrq': 22, 'rssinr': 70}, '859':{'rsrp': 85, 'rsrq': 73, 'rssinr': 134}, '954':{'rsrp': 53, 'rsrq': 36, 'rssinr': 74}  } }
+    payload = json.dumps(ue_message).encode()
+    success = self.rmr_send(payload, 35000)
+    
+    if not success:
+            self.logger.debug("QP Driver was unable to send to QP!")
     
  
 def qp_message_handler(self, summary, sbuf):
