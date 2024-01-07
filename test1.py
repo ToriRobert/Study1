@@ -1,4 +1,7 @@
+from bs4 import BeautifulSoup
 import requests
+import time
+import pandas as pd
 
 def get_aruba_dashboard_cookie(url, account, password):
     '''
